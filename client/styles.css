@@ -3,3 +3,11 @@
 /* Note: an asteroid image is included in this repo.
 Feel free to use it if you like. */
 
+.enemy {
+  fill: steelblue;
+}
+
+.playing-field {
+  border: 3px solid black;
+  width: 1000px;
+}
