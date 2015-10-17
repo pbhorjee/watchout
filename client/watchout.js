@@ -179,6 +179,7 @@ $('#form').bind('keypress', function (e) {
     flash($(':input'), 'unflash');
     numEnemies = $numEnemies.val();
     createField();
+    $numEnemies.blur();
   
     return false;
   }
