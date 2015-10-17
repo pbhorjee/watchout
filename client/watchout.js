@@ -1,6 +1,6 @@
-// start slingin' some d3 here.
-//d3.selectAll("body").data()
+// OBJECTS
 
+  // ENEMIES!
 
 var Enemy = function(x, y) {
   this.x = x;
@@ -34,6 +34,8 @@ function constructEnemies(numEnemies) {
 }
 
 
+  // PLAYER
+
 var Player = function() {
   this.x = floorWidth / 2;
   this.y = floorHeight / 2;
@@ -49,20 +51,25 @@ Player.prototype.getY = function() {
 }
 
 
-constructEnemies();
 
-// var xPlayingField = (d3.select('playing-field')).offsetLeft
-// var yPlayingField = (d3.select('playing-field')).offsetTop;
+// SETUP 
+
+  // GLOBALS
 var colided = false;
 var score = 0;
 var floorWidth = 1000;
 var floorHeight = 500;
-var enemies = constructEnemies(5);
+var enemies = constructEnemies(20);
 var players = [];
+
+
+  // CONSTUCTS
+constructEnemies();
+
 players.push(new Player());
 
 
-
+  // D3'S
 var svg = d3.select("div.playing-field").append("svg")      
       .attr("width", floorWidth)
       .attr("height", floorHeight);
@@ -94,8 +101,7 @@ var playerDot = svg.selectAll(".player")
       .attr("class", "player")
     .call(drag);
 
-
-var circles = svg.selectAll(".enemy")
+var enemeyDots = svg.selectAll(".enemy")
     .data(enemies)
     .enter()
     .append("circle")
@@ -104,6 +110,9 @@ var circles = svg.selectAll(".enemy")
       .attr("r", 12)
       .attr("class", "enemy");
 
+
+
+// TIMELAPSE
 
 setInterval(function() {
   colided = false;
@@ -124,6 +133,9 @@ setInterval(function() {
   d3.select("#current-score").text(score);
 }, 50);
 
+
+
+// EVENTS 
 
 tweenWithCollisionDetection = function(endData) {
   var endPos, enemy, startPos;
@@ -152,28 +164,49 @@ tweenWithCollisionDetection = function(endData) {
   };
 };
 
-
 var onCollision = function() {
   if (!colided) {
+    $('.playing-field').addClass('shake-horizontal');
+
     var highScore = parseInt(d3.select("#high-score").text());
     var currentScore = parseInt(d3.select("#current-score").text());
 
     if (highScore < currentScore) {
       d3.select("#high-score").text(currentScore);
+      flash('#high-score', 'unflash');
     }
 
     score = 0;
     d3.select("#current-score").text('0');
+    flash('#current-score', 'unflash');
 
     var collisions = parseInt(d3.select("#num-collisions").text());
     collisions++;
     d3.select("#num-collisions").text(collisions);
+    flash('#num-collisions', 'unflash');
+    flash('.player', 'dotUnflash');  // player not flashing
+
+    setTimeout(
+      function() { $('.playing-field').removeClass('shake-horizontal') },
+      125);
   }
 
   colided = true;
 }
 
-checkCollision = function(enemy, collidedCallback) {
+var flash = function(elem, unFlashClass) {
+  $(elem).removeClass(unFlashClass);
+  $(elem).addClass('flash');
+
+  setTimeout(
+    function() { 
+      $(elem).addClass(unFlashClass)
+      $(elem).removeClass('flash');
+     },
+    500);
+}
+
+var checkCollision = function(enemy, collidedCallback) {
     var radiusSum, separation, xDiff, yDiff;
 
     radiusSum = parseFloat(enemy.attr('r')) + players[0].r;

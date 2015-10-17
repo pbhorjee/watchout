@@ -1,18 +1,40 @@
-/* your beautiful css styling goes here! */
 
-/* Note: an asteroid image is included in this repo.
-Feel free to use it if you like. */
-
-.enemy {
-  fill: steelblue;
+/*http://www.1001fonts.com/neuropol-x-free-font.html*/
+@font-face {
+  font-family: neuropol;
+  src: url(lib/neuropol.ttf);
 }
 
+body {
+    font-family: neuropol;
+    color: green;
+    font-size: 22px;
+}
+
+.flash {
+  color: red;
+  transition: color .35s;
+}
+
+.unflash {
+  color: green;
+  transition: color 4.75s;
+}
+
+.dotUnflash {
+  color: orange;
+  transition: color 3.75s;
+}
+
+.enemy {
+  fill: steelblue;}
+
 .player {
-  fill: red;
+  fill: orange;
 }
 
 .playing-field {
-  border: 3px solid black;
+  border: 3px solid purple;
   width: 1000px;
+  height: 500px;
 }
-
