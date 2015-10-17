@@ -14,18 +14,16 @@ var numEnemies = 20;
 var enemies;
 var animInterval;
 var scoreInterval;
-var $numEnemies = $('#form #num-enemies')
+var $numEnemies = $('#form #num-enemies');
 
 function constructEnemies(numEnemies) {
   var enemies = [];
-
   for (var i = 0; i < numEnemies; i++) {
     var randX = Math.floor(Math.random() * FLOOR_WIDTH);
     var randY = Math.floor(Math.random() * FLOOR_HEIGHT);
 
     enemies.push(new Entity(randX, randY, ENEMY_RADIUS));
   };
-
   return enemies;
 }
 
@@ -75,7 +73,8 @@ function createField() {
   players[0] = new Entity(FLOOR_WIDTH / 2, FLOOR_HEIGHT / 2, PLAYER_RADIUS);
   d3.selectAll(".enemy").data([]).exit().remove();
   $("div.playing-field").empty();
-  var svg = d3.select("div.playing-field").append("svg")      
+  var svg = d3.select("div.playing-field")
+    .append("svg")      
       .attr("width", FLOOR_WIDTH)
       .attr("height", FLOOR_HEIGHT);
 
@@ -88,41 +87,40 @@ function createField() {
                  .attr('cy', yPos);
      });
 
-var playerDot = svg.selectAll(".player")
-    .data(players)
-    .enter()
-    .append("circle")
-      .attr("cx", function(p) { return p.getX(); })
-      .attr("cy", function(p) { return p.getY(); })
-      .attr("r", function(p) { return p.getR(); })
-      .attr("class", "player")
-    .call(drag);
+  var playerDot = svg.selectAll(".player")
+      .data(players)
+      .enter()
+      .append("circle")
+        .attr("cx", function(p) { return p.getX(); })
+        .attr("cy", function(p) { return p.getY(); })
+        .attr("r", function(p) { return p.getR(); })
+        .attr("class", "player")
+      .call(drag);
 
-var enemeyDots = svg.selectAll(".enemy")
-    .data(enemies)
-    .enter()
-    .append("circle")
-      .attr("cx", function(e) { return e.getX(); })
-      .attr("cy", function(e) { return e.getY(); })
-      .attr("r", function(p) { return p.getR(); })
-      .attr("class", "enemy");
+  var enemeyDots = svg.selectAll(".enemy")
+      .data(enemies)
+      .enter()
+      .append("circle")
+        .attr("cx", function(e) { return e.getX(); })
+        .attr("cy", function(e) { return e.getY(); })
+        .attr("r", function(p) { return p.getR(); })
+        .attr("class", "enemy");
 
+  //set up recurring game functions
+  animInterval = setInterval(function() {
+    for (var i = 0; i < enemies.length; i++) {
+      enemies[i].randomLocation();
+    }
 
-//set up recurring game functions
-animInterval = setInterval(function() {
-  for (var i = 0; i < enemies.length; i++) {
-    enemies[i].randomLocation();
-  }
+    var enemyElements = d3.selectAll(".enemy").data(enemies)
+           .transition().attr("cx", function(e) { return e.getX(); })
+           .attr("cy", function(e) { return e.getY(); }).duration(1400).tween('custom', tweenWithCollisionDetection);
+  }, 1500);
 
-  var enemyElements = d3.selectAll(".enemy").data(enemies)
-         .transition().attr("cx", function(e) { return e.getX(); })
-         .attr("cy", function(e) { return e.getY(); }).duration(1400).tween('custom', tweenWithCollisionDetection);
-}, 1500);
-
-scoreInterval = setInterval(function() {
-  score++;
-  d3.select("#current-score").text(score);
-}, 50);
+  scoreInterval = setInterval(function() {
+    score++;
+    d3.select("#current-score").text(score);
+  }, 50);
 
 }
 
@@ -170,7 +168,6 @@ function checkCollision(enemy, collidedCallback) {
 }
 
 //  FORM
-
 $numEnemies.val(numEnemies);
 
 $('#form').bind('keypress', function (e) {
@@ -178,8 +175,9 @@ $('#form').bind('keypress', function (e) {
     e.preventDefault();
     flash($(':input'), 'unflash');
     numEnemies = $numEnemies.val();
-    createField();
     $numEnemies.blur();
+
+    createField();
   
     return false;
   }
