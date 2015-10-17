@@ -9,10 +9,56 @@ body {
     font-family: neuropol;
     color: green;
     font-size: 22px;
+    width: 1006px; 
+    margin: 30px auto;
+}
+
+#all {
+  position: absolute;
+}
+
+.scoreboard {
+  margin-bottom: 10px;
+}
+
+#title {
+  font-size: 76px;
+  position: absolute;
+  top: -15px;
+  right: -6px;
+}
+
+#num-enemies {
+  color: green;
+  width: 44px;
+  border: 2px dotted green;
+  margin-top: -4px;
+  font-family : inherit;
+  font-size: 14px;
+  vertical-align: middle;
+  text-align: center; 
+}
+
+#num-enemies:focus{
+  outline: 0;
+}
+
+.enemy {
+  fill: steelblue;
+}
+
+.player {
+  fill: orange;
+}
+
+.playing-field {
+  border: 3px solid purple;
+  width: 1000px;
+  height: 500px;
 }
 
 .flash {
-  color: red;
+  color: red !important;
   transition: color .35s;
 }
 
@@ -24,17 +70,4 @@ body {
 .dotUnflash {
   color: orange;
   transition: color 3.75s;
-}
-
-.enemy {
-  fill: steelblue;}
-
-.player {
-  fill: orange;
-}
-
-.playing-field {
-  border: 3px solid purple;
-  width: 1000px;
-  height: 500px;
 }
